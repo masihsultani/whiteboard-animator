@@ -6,6 +6,14 @@ Give it a picture of a finished whiteboard (marker sketch, diagram, hand letteri
 
 This is the render engine behind the Whiteboard format at [Kinoslide](https://kinoslide.com), extracted so it can run on its own.
 
+![A sun, a leaf and a glucose molecule drawing themselves](examples/photosynthesis/01_light_to_glucose.gif)
+
+`examples/` has real scenes generated for a photosynthesis lecture plus a few standalone images, each with the silent MP4 the CLI produces from it:
+
+```bash
+whiteboard-animate examples/photosynthesis/01_light_to_glucose.png --duration 8 -o out.mp4
+```
+
 ## How it works
 
 1. **Detect components.** Ink pixels are split into connected components. A [CRAFT](https://github.com/clovaai/CRAFT-pytorch) text detector (bundled ONNX model, runs on CPU) marks which components are text.
@@ -61,7 +69,7 @@ By default the whole image draws over the first 70% of the scene in a heuristic 
 whiteboard-animate scene.png --audio scene.wav --regions scene.regions.json -o scene.mp4
 ```
 
-A plan is JSON with normalized 0 to 1000 boxes (top-left origin). See `examples/photosynthesis.regions.json`:
+A plan is JSON with normalized 0 to 1000 boxes (top-left origin):
 
 ```json
 {
