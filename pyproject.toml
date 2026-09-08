@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "whiteboard-animator"
-version = "0.1.0"
+version = "0.1.1"
 description = "Turn a whiteboard-style image into a hand-drawn reveal video."
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -44,3 +44,4 @@ whiteboard_animator = ["models/*.onnx"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = ["integration: real bundled CRAFT model, CLI, and ffmpeg output checks"]

@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 from whiteboard_animator import animator as animator_module
 
@@ -11,7 +12,9 @@ class _NoopCraftDetector:
         return np.zeros(image.shape[:2], dtype=bool)
 
 
-animator_module.CRAFTDetector = _NoopCraftDetector
+@pytest.fixture(autouse=True)
+def stub_text_detector(monkeypatch):
+    monkeypatch.setattr(animator_module, "CRAFTDetector", _NoopCraftDetector)
 
 from whiteboard_animator.animator import (  # noqa: E402
     WhiteboardAnimator,

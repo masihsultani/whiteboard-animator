@@ -1,8 +1,8 @@
 """Region plans: how one image is decomposed into ordered drawing acts.
 
-A plan lists regions (bounding box, reveal order, the narration phrase spoken
-while it draws). The animator turns it into per-region time windows so the
-drawing follows the narration.
+A plan lists regions (bounding box, reveal order, associated narration text).
+The animator estimates time windows from text length and box area; these are
+not timestamps aligned to the audio.
 
 The planner uses Google's object-detection convention:
 `box_2d` is [ymin, xmin, ymax, xmax] normalized to 0-1000, relative to the
@@ -170,8 +170,8 @@ class SnippetRegionPlan(BaseModel):
 # the drawing always completes with a comfortable margin.
 DRAW_BUDGET = 0.75
 # How much of each region's slot is set by its narration share vs its ink
-# share. Speech rate is nearly constant, so a region's character count tracks
-# how long its phrase takes to say.
+# share. Character count is a rough pacing estimate; pauses and variations
+# in speaking rate are not measured.
 NARRATION_WEIGHT = 0.7
 
 
@@ -182,7 +182,7 @@ def build_narration_weighted_plan(
 
     The total drawing spans DRAW_BUDGET of the audio. Within that budget each
     region's slot is proportional to a blend of its annotation's character
-    share and its box-area share.
+    share and its box-area share. This does not analyze or align speech.
     """
     regions = sorted(region_plan.regions, key=lambda r: r.reveal_order)
     regions = [r for r in regions if r.box is not None]

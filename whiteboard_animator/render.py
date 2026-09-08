@@ -4,6 +4,7 @@ several such scenes concatenated into one video."""
 from __future__ import annotations
 
 import os
+import math
 import subprocess
 import tempfile
 from dataclasses import dataclass
@@ -36,7 +37,13 @@ def probe_duration(media_path: str | Path) -> float:
          "-of", "csv=p=0", str(media_path)],
         check=True, capture_output=True, text=True,
     )
-    return float(out.stdout.strip())
+    try:
+        duration = float(out.stdout.strip())
+    except ValueError as exc:
+        raise ValueError(f"cannot determine duration of audio '{media_path}'") from exc
+    if not math.isfinite(duration) or duration <= 0:
+        raise ValueError(f"audio '{media_path}' must have a finite duration greater than zero")
+    return duration
 
 
 def render_scene(
@@ -55,6 +62,8 @@ def render_scene(
     if scene.audio is None and scene.duration is None:
         raise ValueError("scene needs audio or duration")
     duration = scene.duration if scene.audio is None else probe_duration(scene.audio)
+    if not math.isfinite(duration) or duration <= 0:
+        raise ValueError("scene duration must be a finite number greater than zero")
 
     element_plan = None
     if scene.region_plan is not None:
@@ -62,7 +71,11 @@ def render_scene(
     if animator is None:
         animator = WhiteboardAnimator(fade_duration=0.06 if element_plan else 0.12)
 
-    img_array = np.array(Image.open(scene.image))
+    with Image.open(scene.image) as image:
+        # Normalize palette, grayscale, and transparent images to ink on white.
+        rgba = image.convert("RGBA")
+        background = Image.new("RGBA", image.size, "white")
+        img_array = np.array(Image.alpha_composite(background, rgba).convert("RGB"))
     settings = QUALITY.get(quality, QUALITY["medium"])
     output_path = str(output_path)
 
