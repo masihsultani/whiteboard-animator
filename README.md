@@ -51,7 +51,7 @@ Python 3.10+, with `ffmpeg` and `ffprobe` on your PATH.
 pip install whiteboard-animator
 ```
 
-Optional Gemini-based region detection:
+Rendering needs no API key. The one optional feature that does is `--detect-regions`, which asks Gemini to work out the drawing order from the image and narration. It needs the `gemini` extra and `GOOGLE_API_KEY`. You can skip it and write a region plan by hand (see below).
 
 ```bash
 pip install 'whiteboard-animator[gemini]'
