@@ -36,6 +36,21 @@ Every image in `examples/` ships with the MP4 the CLI produced from it. The phot
   </tr>
 </table>
 
+### Full videos made with this engine
+
+Complete narrated lectures from Kinoslide, where every scene is drawn by this engine in sync with the voice. Click to watch on YouTube.
+
+<table>
+  <tr>
+    <td><a href="https://youtu.be/KfqNNl99Tv4"><img src="https://img.youtube.com/vi/KfqNNl99Tv4/maxresdefault.jpg" alt="The Yen Carry Trade Unwind" width="100%"></a></td>
+    <td><a href="https://youtu.be/9Z_6x8KZwww"><img src="https://img.youtube.com/vi/9Z_6x8KZwww/maxresdefault.jpg" alt="General Relativity in 2 minutes" width="100%"></a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://youtu.be/KfqNNl99Tv4">The Yen Carry Trade Unwind</a></td>
+    <td align="center"><a href="https://youtu.be/9Z_6x8KZwww">General Relativity in 2 minutes</a></td>
+  </tr>
+</table>
+
 Try one:
 
 ```bash
